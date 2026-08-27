@@ -30,19 +30,23 @@ export default function Login() {
     return (
         <>
             <div>
+                <p>
+                    <h2>Want to test your prompts?</h2>
+                    Sign in to access PromptShield v2!
+                </p>
                 <div>
                     <h2>Sign In</h2>
                     <form onSubmit={handleSubmit} >
                         <div>
                             <label htmlFor="Email Address">Email Address</label>
-                            <input type="email" id="email" required value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='you@example.com'  />
+                            <input type="email" id="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder='you@example.com' />
                         </div>
                         <div>
                             <label htmlFor="Password">Password</label>
-                            <input type="password" id="password" required value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='********' />
+                            <input type="password" id="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder='********' />
                         </div>
                         <button type="submit" disabled={loading}>
-                            {loading?'Logging in....':'Login'}
+                            {loading ? 'Logging in....' : 'Login'}
                         </button>
                     </form>
                     <p>
