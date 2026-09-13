@@ -2,7 +2,7 @@
 export default function RequestChart() {
     return (
         <>
-            <div className="border-2 shadow-lg h-[500px] w-[800px] flex justify-center my-50 mx-auto"></div>
+            <div className="my-8 aspect-video w-full rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 shadow-sm"></div>
         </>
     )
 };

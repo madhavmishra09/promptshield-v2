@@ -1,9 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Geo:ital@0;1&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
 @import "tailwindcss";
 
 @source "./**/*.{js,ts,jsx,tsx}";
 
+:root {
+  --background: #f8fbff;
+  --foreground: #0f172a;
+  --brand: #1d4ed8;
+  --brand-dark: #172554;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: "Montserrat", sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-quicksand), sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: #bfdbfe;
+  color: var(--brand-dark);
 }
