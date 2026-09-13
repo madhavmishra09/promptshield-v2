@@ -1,6 +1,8 @@
 'use client';
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import AuthBrand from '../components/AuthBrand';
 export default function SignUp() {
     const [first_name, setFirstName] = useState('');
     const [last_name, setLastName] = useState('');
@@ -9,6 +11,7 @@ export default function SignUp() {
     const [confirm_password, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
@@ -24,9 +27,9 @@ export default function SignUp() {
                 throw new Error(data.message || 'Something went wrong');
             }
             alert('Account Created Successfully!');
-            window.location.href = '/dashboard';
-        } catch (err: any) {
-            setError(err.message);
+            router.push('/dashboard');
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Something went wrong');
         } finally {
             setLoading(false);
         }
@@ -35,22 +38,17 @@ export default function SignUp() {
         <>
             <div className="min-h-screen bg-slate-50">
 
-                {/* Logo */}
-                <div className="absolute left-6 top-6">
-                    <h1 className="rounded-[30px] border-2 border-neutral-950 p-3 text-5xl font-bold">
-                        PromptShield v2
-                    </h1>
-                </div>
+                <AuthBrand />
 
                 {/* Signup */}
                 <div className="flex min-h-screen flex-col items-center justify-center px-4">
 
                     <div className="mb-6 text-center">
-                        <h2 className="mb-2 text-4xl font-bold md:text-5xl">
+                        <h2 className="mb-2 text-3xl font-bold tracking-tight text-blue-950 md:text-5xl">
                             Want to test your prompts?
                         </h2>
 
-                        <p className="text-xl font-bold md:text-2xl">
+                        <p className="text-lg font-semibold text-slate-500 md:text-xl">
                             Create your account now to access PromptShield!
                         </p>
                     </div>
@@ -155,6 +153,12 @@ export default function SignUp() {
                                className="h-11 w-full rounded-lg border-2 border-slate-300 px-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                             />
                         </div>
+
+                        {error && (
+                            <p className="mb-4 rounded-lg bg-red-50 p-3 text-sm font-semibold text-red-600">
+                                {error}
+                            </p>
+                        )}
 
                         <button
                             type="submit"

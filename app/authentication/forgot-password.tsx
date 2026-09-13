@@ -1,12 +1,14 @@
 'use client';
 
-import Link from 'next/link';
 import { useState, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import AuthBrand from '../components/AuthBrand';
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -34,10 +36,10 @@ export default function ForgotPassword() {
             alert('OTP has been sent to your email.');
 
             // Move to OTP verification page
-            window.location.href = `/verify-otp?email=${encodeURIComponent(email)}`;
+            router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
 
-        } catch (err: any) {
-            setError(err.message || 'Something went wrong');
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Something went wrong');
         } finally {
             setLoading(false);
         }
@@ -46,23 +48,18 @@ export default function ForgotPassword() {
     return (
         <div className="min-h-screen bg-slate-50">
 
-            {/* Logo */}
-            <div className="absolute left-6 top-6">
-                <h1 className="rounded-[30px] border-2 border-neutral-950 p-3 text-5xl font-bold">
-                    PromptShield v2
-                </h1>
-            </div>
+            <AuthBrand />
 
             {/* Main Content */}
             <div className="flex min-h-screen flex-col items-center justify-center px-4">
 
                 {/* Heading */}
                 <div className="mb-6 text-center">
-                    <h2 className="mb-2 text-4xl font-bold md:text-5xl">
+                    <h2 className="mb-2 text-3xl font-bold tracking-tight text-blue-950 md:text-5xl">
                         Forgot your password?
                     </h2>
 
-                    <p className="text-xl font-bold md:text-2xl">
+                    <p className="text-lg font-semibold text-slate-500 md:text-xl">
                         Enter your email to reset your password.
                     </p>
                 </div>

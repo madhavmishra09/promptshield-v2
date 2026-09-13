@@ -1,17 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import AuthBrand from '../components/AuthBrand';
 
 export default function ResetSuccess() {
     return (
         <div className="min-h-screen bg-slate-50">
 
-            {/* Logo */}
-            <div className="absolute left-6 top-6">
-                <h1 className="rounded-[30px] border-2 border-neutral-950 p-3 text-5xl font-bold">
-                    PromptShield v2
-                </h1>
-            </div>
+            <AuthBrand />
 
             {/* Main Content */}
             <div className="flex min-h-screen flex-col items-center justify-center px-4">

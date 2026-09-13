@@ -2,11 +2,13 @@
 
 import Link from 'next/link';
 import { useState, FormEvent } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import AuthBrand from '../components/AuthBrand';
 
 export default function VerifyOTP() {
     const searchParams = useSearchParams();
     const email = searchParams.get('email') || '';
+    const router = useRouter();
 
     const [otp, setOtp] = useState('');
     const [error, setError] = useState('');
@@ -40,8 +42,7 @@ export default function VerifyOTP() {
 
             alert('OTP verified successfully.');
 
-            window.location.href =
-                `/reset-password?email=${encodeURIComponent(email)}`;
+            router.push(`/reset-password?email=${encodeURIComponent(email)}`);
 
         } catch (err: unknown) {
             if (err instanceof Error) {
@@ -57,23 +58,18 @@ export default function VerifyOTP() {
     return (
         <div className="min-h-screen bg-slate-50">
 
-            {/* Logo */}
-            <div className="absolute left-6 top-6">
-                <h1 className="rounded-[30px] border-2 border-neutral-950 p-3 text-5xl font-bold">
-                    PromptShield v2
-                </h1>
-            </div>
+            <AuthBrand />
 
             {/* Main Content */}
             <div className="flex min-h-screen flex-col items-center justify-center px-4">
 
                 {/* Heading */}
                 <div className="mb-6 text-center">
-                    <h2 className="mb-2 text-4xl font-bold md:text-5xl">
+                    <h2 className="mb-2 text-3xl font-bold tracking-tight text-blue-950 md:text-5xl">
                         Verify your OTP
                     </h2>
 
-                    <p className="text-xl font-bold md:text-2xl">
+                    <p className="text-lg font-semibold text-slate-500 md:text-xl">
                         Enter the OTP sent to your email.
                     </p>
 

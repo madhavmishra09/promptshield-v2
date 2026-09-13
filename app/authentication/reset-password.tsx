@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import AuthBrand from '../components/AuthBrand';
 
 export default function ResetPassword() {
     const searchParams = useSearchParams();
     const email = searchParams.get('email') || '';
+    const router = useRouter();
 
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -51,7 +53,7 @@ export default function ResetPassword() {
 
             alert('Password reset successfully.');
 
-            window.location.href = '/reset-success';
+            router.push('/reset-success');
 
         } catch (err: unknown) {
             if (err instanceof Error) {
@@ -67,23 +69,18 @@ export default function ResetPassword() {
     return (
         <div className="min-h-screen bg-slate-50">
 
-            {/* Logo */}
-            <div className="absolute left-6 top-6">
-                <h1 className="rounded-[30px] border-2 border-neutral-950 p-3 text-5xl font-bold">
-                    PromptShield v2
-                </h1>
-            </div>
+            <AuthBrand />
 
             {/* Main Content */}
             <div className="flex min-h-screen flex-col items-center justify-center px-4">
 
                 {/* Heading */}
                 <div className="mb-6 text-center">
-                    <h2 className="mb-2 text-4xl font-bold md:text-5xl">
+                    <h2 className="mb-2 text-3xl font-bold tracking-tight text-blue-950 md:text-5xl">
                         Create a new password
                     </h2>
 
-                    <p className="text-xl font-bold md:text-2xl">
+                    <p className="text-lg font-semibold text-slate-500 md:text-xl">
                         Choose a strong password for your account.
                     </p>
                 </div>

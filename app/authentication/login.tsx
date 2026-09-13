@@ -2,12 +2,15 @@
 
 import Link from 'next/link';
 import { useState, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import AuthBrand from '../components/AuthBrand';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -37,7 +40,7 @@ export default function Login() {
 
             alert('Login successful!');
 
-            window.location.href = '/dashboard';
+            router.push('/dashboard');
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -52,23 +55,18 @@ export default function Login() {
     return (
         <div className="min-h-screen bg-slate-50">
 
-            {/* Logo */}
-            <div className="absolute left-6 top-6">
-                <h1 className="rounded-[30px] border-2 border-neutral-950 px-3 py-2 text-4xl font-bold md:text-5xl">
-                    PromptShield v2
-                </h1>
-            </div>
+            <AuthBrand />
 
             {/* Main Content */}
             <div className="flex min-h-screen flex-col items-center justify-center px-4">
 
                 {/* Heading */}
                 <div className="mb-6 text-center">
-                    <h2 className="mb-2 text-4xl font-bold md:text-5xl">
+                    <h2 className="mb-2 text-3xl font-bold tracking-tight text-blue-950 md:text-5xl">
                         Want to test your prompts?
                     </h2>
 
-                    <p className="text-xl font-bold md:text-2xl">
+                    <p className="text-lg font-semibold text-slate-500 md:text-xl">
                         Sign in to access PromptShield v2!
                     </p>
                 </div>
@@ -139,7 +137,7 @@ export default function Login() {
 
                     {/* Signup Link */}
                     <p className="mt-5">
-                        Don't have an account?{' '}
+                        Don&apos;t have an account?{' '}
                         <Link
                             href="/signup"
                             className="font-semibold underline hover:text-blue-600"
