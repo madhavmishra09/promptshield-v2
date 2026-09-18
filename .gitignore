@@ -40,3 +40,4 @@ yarn-error.log*
 *.tsbuildinfo
 frontend/next-env.d.ts
 backend/dist
+backend/src/config
