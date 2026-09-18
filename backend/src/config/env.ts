@@ -1,10 +1,11 @@
 import dotenv from "dotenv";
 dotenv.config();
-const port=process.env.PORT;
-const db=process.env.DATABASE_URL;
-const jwt=process.env.JWT_SECRET;
-const ollama=process.env.OLLAMA_URL;
-const ml=process.env.ML_SERVICE_URL;
+const port = process.env.PORT || "5000";
+const portNumber = Number(port);
+const databaseUrl = requireEnv("DATABASE_URL");
+const jwtSecret = requireEnv("JWT_SECRET");
+const ollamaUrl = requireEnv("OLLAMA_URL");
+const mlServiceUrl = requireEnv("ML_SERVICE_URL");
 function requireEnv(name: string): string {
     const value = process.env[name];
     if (!value) {
@@ -12,3 +13,12 @@ function requireEnv(name: string): string {
     }
     return value;
 }
+const env = {
+    port: portNumber,
+    databaseUrl,
+    jwtSecret,
+    ollamaUrl,
+    mlServiceUrl,
+};
+
+export default env;
