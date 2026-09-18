@@ -39,5 +39,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 frontend/next-env.d.ts
-backend/dist
+backend/dist/
 backend/src/config/env.ts
