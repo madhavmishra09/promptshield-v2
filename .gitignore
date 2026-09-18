@@ -41,3 +41,7 @@ yarn-error.log*
 frontend/next-env.d.ts
 backend/dist/
 backend/src/config/env.ts
+backend/.agents
+backend/.claude
+backend/.cursor
+backend/.devin
