@@ -1,27 +1,91 @@
 import express from "express";
-import type { Application, Request, Response } from "express";
-
 import env from "./config/env.js";
+
 import authRoutes from "./routes/auth.routes.js";
+import chatRoutes from "./routes/chat.routes.js";
+import logsRoutes from "./routes/logs.routes.js";
+import policiesRoutes from "./routes/policies.routes.js";
+import modelsRoutes from "./routes/models.routes.js";
+
+
 import errorMiddleware from "./middleware/error.middleware.js";
-const app: Application = express();
 
-const port = env.port;
+const app = express();
 
-// Middleware
+
+// ================================
+// Global Middleware
+// ================================
+
 app.use(express.json());
 
-// Health check
-app.get("/api/health", (req: Request, res: Response): void => {
-    res.status(200).json({
-        message: "Backend is running",
-        status: "ok",
-    });
-});
 
+
+
+// ================================
+// Health Check
+// ================================
+
+app.get(
+    "/",
+    (req, res) => {
+
+        res.status(200).json({
+            message: "PromptShield v2 backend is running."
+        });
+
+    }
+);
+
+
+// ================================
 // Routes
-app.use("/api/auth", authRoutes);
+// ================================
+
+app.use(
+    "/api/auth",
+    authRoutes
+);
+
+app.use(
+    "/api/chat",
+    chatRoutes
+);
+
+app.use(
+    "/api/logs",
+    logsRoutes
+);
+
+app.use(
+    "/api/policies",
+    policiesRoutes
+);
+
+app.use(
+    "/api/models",
+    modelsRoutes
+);
+
+
+// ================================
+// Error Handler
+// ================================
+
 app.use(errorMiddleware);
-app.listen(port, () => {
-    console.log(`Backend is running at ${port}`);
-});
+
+
+// ================================
+// Server
+// ================================
+
+app.listen(
+    env.port,
+    () => {
+
+        console.log(
+            `PromptShield backend running on port ${env.port}`
+        );
+
+    }
+);
