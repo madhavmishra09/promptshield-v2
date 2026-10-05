@@ -45,3 +45,5 @@ backend/.agents
 backend/.claude
 backend/.devin
 backend/.cursor
+
+venv/
