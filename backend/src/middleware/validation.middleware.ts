@@ -1,10 +1,20 @@
-import type { Request, Response, NextFunction } from "express";
+import type {
+    Request,
+    Response,
+    NextFunction
+} from "express";
+
+
+// ========================================
+// Signup Validation
+// ========================================
 
 export const validateSignup = (
     req: Request,
     res: Response,
     next: NextFunction
 ): void => {
+
     const {
         firstName,
         lastName,
@@ -23,6 +33,7 @@ export const validateSignup = (
         res.status(400).json({
             error: "All fields are required.",
         });
+
         return;
     }
 
@@ -30,6 +41,7 @@ export const validateSignup = (
         res.status(400).json({
             error: "Please provide a valid email address.",
         });
+
         return;
     }
 
@@ -37,6 +49,7 @@ export const validateSignup = (
         res.status(400).json({
             error: "Password must be at least 8 characters long.",
         });
+
         return;
     }
 
@@ -44,6 +57,7 @@ export const validateSignup = (
         res.status(400).json({
             error: "Password must contain at least one number.",
         });
+
         return;
     }
 
@@ -51,6 +65,7 @@ export const validateSignup = (
         res.status(400).json({
             error: "Password must contain at least one special character.",
         });
+
         return;
     }
 
@@ -58,6 +73,7 @@ export const validateSignup = (
         res.status(400).json({
             error: "Passwords do not match.",
         });
+
         return;
     }
 
@@ -65,17 +81,26 @@ export const validateSignup = (
 };
 
 
+// ========================================
+// Login Validation
+// ========================================
+
 export const validateLogin = (
     req: Request,
     res: Response,
     next: NextFunction
 ): void => {
-    const { email, password } = req.body;
+
+    const {
+        email,
+        password
+    } = req.body;
 
     if (!email || !password) {
         res.status(400).json({
             error: "Email and password are required.",
         });
+
         return;
     }
 
@@ -83,6 +108,42 @@ export const validateLogin = (
         res.status(400).json({
             error: "Please provide a valid email address.",
         });
+
+        return;
+    }
+
+    next();
+};
+
+
+// ========================================
+// Chat Validation
+// ========================================
+
+export const validateChat = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): void => {
+
+    const { prompt } = req.body;
+
+    if (
+        !prompt ||
+        typeof prompt !== "string"
+    ) {
+        res.status(400).json({
+            error: "Prompt is required and must be a string.",
+        });
+
+        return;
+    }
+
+    if (prompt.trim().length === 0) {
+        res.status(400).json({
+            error: "Prompt cannot be empty.",
+        });
+
         return;
     }
 
