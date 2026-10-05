@@ -6,12 +6,38 @@ datasource db{
     provider="postgresql"
 }
 
-model User{
-    id Int @id @default(autoincrement()) 
-    firstName String
-    lastName String
-    email String @unique
+model User {
+    id           Int       @id @default(autoincrement())
+    firstName    String
+    lastName     String
+    email        String    @unique
     passwordHash String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt 
+    createdAt    DateTime  @default(now())
+    updatedAt    DateTime  @updatedAt
+
+    chatLogs     ChatLog[]
+}
+
+model ChatLog {
+    id             Int      @id @default(autoincrement())
+    userId         Int
+
+    prompt         String
+    response       String
+
+    detected       Boolean
+    matchedRules   Json
+    categories     Json
+
+    ruleRisk       Int?
+    mlProbability  Float?
+    finalRisk      Int?
+    decision       String
+
+    createdAt      DateTime @default(now())
+
+    user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
+    @@index([createdAt])
 }

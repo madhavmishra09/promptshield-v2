@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 frontend/next-env.d.ts
+#backend
+backend/dist
+backend/.agents
+backend/.claude
+backend/.devin
+backend/.cursor

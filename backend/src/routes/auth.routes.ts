@@ -1,21 +1,18 @@
-import express from "express";
-import type { Router } from "express";
+import { Router } from "express";
 
 import {
     loginController,
     signUpController,
     forgotPasswordController,
-    meController,
+    meController
 } from "../controllers/auth.controller.js";
 
-import authMiddleware from "../middleware/auth.middleware.js";
-
 import {
-    validateSignup,
     validateLogin,
+    validateSignup
 } from "../middleware/validation.middleware.js";
 
-const router: Router = express.Router();
+const router = Router();
 
 router.post(
     "/login",
@@ -36,8 +33,7 @@ router.post(
 
 router.get(
     "/me",
-    authMiddleware,
     meController
 );
 
-export default router;  
+export default router;
