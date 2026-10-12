@@ -27,27 +27,47 @@ export default function PromptInput({ setChat }:PromptInputProps) {
     setIsSending(true);
 
     try {
+      const token = sessionStorage.getItem("promptshield_token");
+      if (!token) {
+        throw new Error("Your session has expired. Please log in again.");
+      }
+
+      const apiBaseUrl =
+        process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
       const res = await axios.post(
-        "http://localhost:5000/api/chat",
-        { message: trimmedMessage }
+        `${apiBaseUrl}/api/chat`,
+        { prompt: trimmedMessage },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       const botMessage: ChatMessage = {
         role: "bot",
         text: res.data.response,
-        status: res.data.status,
-        score: res.data.score,
+        status: res.data.decision,
+        score: res.data.risk,
       };
 
       setChat((prev) => [...prev, botMessage]);
 
     } catch (err) {
       console.error(err);
+      const errorMessage = axios.isAxiosError<{ error?: string; message?: string }>(err)
+        ? err.response?.data?.error ||
+          err.response?.data?.message ||
+          "Could not reach the backend. Make sure the server is running."
+        : err instanceof Error
+          ? err.message
+          : "Something went wrong while sending your prompt.";
+
       setChat((prev) => [
         ...prev,
         {
           role: "error",
-          text: "Could not reach the backend. Make sure the server is running on port 5000.",
+          text: errorMessage,
         },
       ]);
     } finally {

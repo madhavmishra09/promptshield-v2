@@ -45,3 +45,6 @@ backend/.agents
 backend/.claude
 backend/.devin
 backend/.cursor
+__pycache__/
+venv/
+.venv

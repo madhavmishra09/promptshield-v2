@@ -1,8 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState, useSyncExternalStore } from 'react';
+
+const AUTH_TOKEN_KEY = 'promptshield_token';
+const AUTH_CHANGE_EVENT = 'promptshield-auth-change';
+
+function subscribeToAuthChanges(onChange: () => void) {
+    window.addEventListener(AUTH_CHANGE_EVENT, onChange);
+    return () => window.removeEventListener(AUTH_CHANGE_EVENT, onChange);
+}
+
+function getAuthSnapshot() {
+    return Boolean(sessionStorage.getItem(AUTH_TOKEN_KEY));
+}
+
+function getServerAuthSnapshot() {
+    return false;
+}
 
 const navigationLinks = [
     { href: '/', label: 'Home' },
@@ -16,15 +32,28 @@ const navigationLinks = [
 
 export default function Navbar() {
     const pathname = usePathname();
+    const router = useRouter();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const isAuthenticated = useSyncExternalStore(
+        subscribeToAuthChanges,
+        getAuthSnapshot,
+        getServerAuthSnapshot
+    );
+
+    const handleLogout = () => {
+        sessionStorage.removeItem(AUTH_TOKEN_KEY);
+        window.dispatchEvent(new Event(AUTH_CHANGE_EVENT));
+        setIsMenuOpen(false);
+        router.push('/login');
+    };
 
     return (
-        <div className="mx-auto w-full max-w-7xl px-4 pt-5 sm:px-6 lg:px-8">
-            <nav className="rounded-2xl border border-blue-200 bg-white/90 px-4 py-3 shadow-sm backdrop-blur sm:px-6">
-                <div className="flex items-center justify-between gap-4">
+        <div className="mx-auto w-full max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
+            <nav className="flex flex-col gap-3 rounded-2xl border border-blue-200 bg-white/90 px-4 py-3 shadow-sm backdrop-blur sm:px-5 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex min-h-10 items-center justify-between gap-4">
                     <Link
                         href="/"
-                        className="text-xl font-extrabold tracking-tight text-blue-950 sm:text-2xl"
+                        className="shrink-0 text-lg font-extrabold tracking-tight text-blue-950 sm:text-xl"
                         onClick={() => setIsMenuOpen(false)}
                     >
                         PromptShield <span className="text-blue-600">v2</span>
@@ -35,7 +64,7 @@ export default function Navbar() {
                         aria-expanded={isMenuOpen}
                         aria-controls="primary-navigation"
                         aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-                        className="grid h-10 w-10 place-items-center rounded-xl border border-blue-200 text-blue-950 transition hover:bg-blue-50 sm:hidden"
+                        className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-blue-200 text-blue-950 transition hover:bg-blue-50 lg:hidden"
                         onClick={() => setIsMenuOpen((open) => !open)}
                     >
                         <span className="sr-only">Menu</span>
@@ -49,9 +78,9 @@ export default function Navbar() {
 
                 <div
                     id="primary-navigation"
-                    className={`${isMenuOpen ? 'block' : 'hidden'} border-t border-blue-100 pt-3 sm:block sm:border-0 sm:pt-0`}
+                    className={`${isMenuOpen ? 'block' : 'hidden'} border-t border-blue-100 pt-3 lg:block lg:border-0 lg:pt-0`}
                 >
-                    <div className="mt-3 flex flex-col gap-1 sm:mt-3 sm:flex-row sm:items-center sm:justify-end sm:gap-1 lg:gap-2">
+                    <div className="flex flex-col gap-1 lg:flex-row lg:items-center lg:justify-end lg:gap-1 xl:gap-2">
                         {navigationLinks.map((link) => {
                             const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
 
@@ -60,7 +89,7 @@ export default function Navbar() {
                                     key={link.href}
                                     href={link.href}
                                     onClick={() => setIsMenuOpen(false)}
-                                    className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${isActive
+                                    className={`whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition ${isActive
                                         ? 'bg-blue-50 text-blue-700'
                                         : 'text-slate-600 hover:bg-blue-50 hover:text-blue-700'
                                         }`}
@@ -70,13 +99,23 @@ export default function Navbar() {
                             );
                         })}
 
-                        <Link
-                            href="/login"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="mt-2 rounded-xl bg-blue-950 px-4 py-2 text-center text-sm font-bold text-white transition hover:bg-blue-800 sm:mt-0 sm:ml-1"
-                        >
-                            Login
-                        </Link>
+                        {isAuthenticated ? (
+                            <button
+                                type="button"
+                                onClick={handleLogout}
+                                className="mt-2 whitespace-nowrap rounded-xl bg-blue-950 px-4 py-2 text-center text-sm font-bold text-white transition hover:bg-blue-800 lg:mt-0 lg:ml-1"
+                            >
+                                Log out
+                            </button>
+                        ) : (
+                            <Link
+                                href="/login"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="mt-2 whitespace-nowrap rounded-xl bg-blue-950 px-4 py-2 text-center text-sm font-bold text-white transition hover:bg-blue-800 lg:mt-0 lg:ml-1"
+                            >
+                                Login
+                            </Link>
+                        )}
                     </div>
                 </div>
             </nav>

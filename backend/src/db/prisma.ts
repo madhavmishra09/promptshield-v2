@@ -7,7 +7,7 @@ const adapter = new PrismaPg({
 });
 
 const prisma = new PrismaClient({
-    adapter,
+    adapter
 });
 
 export default prisma;

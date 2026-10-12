@@ -1,16 +1,17 @@
 import type { PolicyInput, PolicyResult } from "./types.js";
+
+const BLOCK_THRESHOLD = 70;
+
 export default function policyEngine(
     input: PolicyInput
 ): PolicyResult {
-    const BLOCK_THRESHOLD=70;
-    if(input.finalRisk>BLOCK_THRESHOLD){
-        return{
-            decision:"BLOCK"
-        }
+    if (input.finalRisk >= BLOCK_THRESHOLD) {
+        return {
+            decision: "BLOCK",
+        };
     }
-    else{
-        return{
-            decision:"ALLOW"
-        }
-    }
+
+    return {
+        decision: "ALLOW",
+    };
 }

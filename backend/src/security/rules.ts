@@ -67,7 +67,7 @@ const rule009: SecurityRule = {
     id: "RULE-009",
     name: "Credential Extraction",
     category: "Secret Extraction",
-    pattern: /(?:reveal|show|provide|give|tell)\s+(?:me\s+)?(?:the\s+)?(?:password|passwords|api\s+key|api\s+keys|access\s+token|tokens|credentials)/i,
+    pattern: /(?:reveal|show|provide|give|tell)\s+(?:(?:me|your)\s+)?(?:the\s+)?(?:password|passwords|api\s+key|api\s+keys|access\s+token|tokens|credentials)/i,
     weight: 40,
     description: "Detects attempts to obtain credentials, API keys, or access tokens."
 };

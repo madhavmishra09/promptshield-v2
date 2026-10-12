@@ -146,6 +146,11 @@ export const validateChat = (
 
         return;
     }
-
+    if (prompt.length > 20000) {
+    res.status(413).json({
+        error: "Prompt exceeds the maximum length of 20000 characters."
+    });
+    return;
+}
     next();
 };

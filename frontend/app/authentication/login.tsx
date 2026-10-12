@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -19,27 +20,47 @@ export default function Login() {
         setError('');
 
         try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email,
-                    password,
-                }),
-            });
+            const API_BASE_URL =
+                process.env.NEXT_PUBLIC_API_BASE_URL ||
+                'http://localhost:5000';
+
+            const response = await fetch(
+                `${API_BASE_URL}/api/auth/login`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        
+                        email,
+                        password,
+                    }),
+                }
+            );
 
             const data = await response.json();
 
             if (!response.ok) {
                 throw new Error(
-                    data.message || 'Invalid email or password'
+                    data.error ||
+                    data.message ||
+                    'Invalid email or password'
                 );
             }
 
-            alert('Login successful!');
+            if (!data.token) {
+                throw new Error(
+                    'Login succeeded, but no token was returned.'
+                );
+            }
 
+            sessionStorage.setItem(
+                'promptshield_token',
+                data.token
+            );
+
+            alert('Login successful!');
             router.push('/dashboard');
         } catch (err: unknown) {
             if (err instanceof Error) {
@@ -54,12 +75,10 @@ export default function Login() {
 
     return (
         <div className="min-h-screen bg-slate-50">
-
             <AuthBrand />
 
             {/* Main Content */}
             <div className="flex min-h-screen flex-col items-center justify-center px-4">
-
                 {/* Heading */}
                 <div className="mb-6 text-center">
                     <h2 className="mb-2 text-3xl font-bold tracking-tight text-blue-950 md:text-5xl">
@@ -76,10 +95,12 @@ export default function Login() {
                     onSubmit={handleSubmit}
                     className="w-full max-w-lg rounded-2xl border-2 border-slate-200 bg-white p-8 text-center shadow-lg"
                 >
-
                     {/* Error Message */}
                     {error && (
-                        <div className="mb-5 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+                        <div
+                            role="alert"
+                            className="mb-5 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm font-medium text-red-600"
+                        >
                             {error}
                         </div>
                     )}
@@ -98,8 +119,11 @@ export default function Login() {
                             id="email"
                             name="email"
                             required
+                            autoComplete="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) =>
+                                setEmail(e.target.value)
+                            }
                             placeholder="you@example.com"
                             className="h-11 w-full rounded-lg border-2 border-slate-300 px-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                         />
@@ -119,9 +143,12 @@ export default function Login() {
                             id="password"
                             name="password"
                             required
+                            autoComplete="current-password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="********"
+                            onChange={(e) =>
+                                setPassword(e.target.value)
+                            }
+                            placeholder="Enter your password"
                             className="h-11 w-full rounded-lg border-2 border-slate-300 px-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                         />
                     </div>
@@ -145,7 +172,6 @@ export default function Login() {
                             Sign Up
                         </Link>
                     </p>
-
                 </form>
             </div>
         </div>

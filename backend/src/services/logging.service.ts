@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../db/prisma.js";
 import type { ChatLogInput } from "../security/types.js";
 
@@ -10,11 +11,11 @@ export default async function loggingService(
             prompt: input.prompt,
             response: input.response,
             detected: input.detected,
-            matchedRules: input.matchedRules,
-            categories: input.categories,
-            ruleRisk: input.ruleRisk,
-            mlProbability: input.mlProbability,
-            finalRisk: input.finalRisk,
+            matchedRules: input.matchedRules as unknown as Prisma.InputJsonArray,
+categories: input.categories as unknown as Prisma.InputJsonArray,
+            ruleRisk: input.ruleRisk ?? null,
+            mlProbability: input.mlProbability ?? null,
+            finalRisk: input.finalRisk ?? null,
             decision: input.decision
         }
     });
