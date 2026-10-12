@@ -1,6 +1,6 @@
 import express from "express";
 import env from "./config/env.js";
-
+import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
 import logsRoutes from "./routes/logs.routes.js";
@@ -12,12 +12,19 @@ import errorMiddleware from "./middleware/error.middleware.js";
 
 const app = express();
 
+app.use(
+    cors({
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+    })
+);
 
+app.use(express.json());
 // ================================
 // Global Middleware
 // ================================
 
-app.use(express.json());
 
 
 

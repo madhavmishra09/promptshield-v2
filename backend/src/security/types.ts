@@ -20,7 +20,7 @@ export interface DetectionResult {
 }
 export interface RiskEngineInput {
     matchedRules: MatchedRule[];
-    mlProbabilty: number;
+    mlProbability: number;
 }
 export interface RiskEngineResult {
     ruleRisk: number;
