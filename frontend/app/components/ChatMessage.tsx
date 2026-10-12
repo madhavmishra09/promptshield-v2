@@ -24,7 +24,7 @@ export default function ChatMessage({ role, text, status, score }: ChatMessagePr
                 {!isUser && (status || score !== undefined) && (
                     <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold">
                         {status && <span className="rounded-full bg-slate-100 px-3 py-1 text-slate-600">{status}</span>}
-                        {score !== undefined && <span className="rounded-full bg-blue-50 px-3 py-1 text-blue-700">Risk score: {score}</span>}
+                        {score !== undefined && <span className="rounded-full bg-blue-50 px-3 py-1 text-blue-700">Risk score: {score.toFixed(2)}</span>}
                     </div>
                 )}
             </div>

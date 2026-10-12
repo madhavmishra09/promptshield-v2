@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import PromptInput from '../components/PromptInput';
 import ChatMessage from '../components/ChatMessage';
-import SecurityBadge from '../components/SecurityBadge';
 import HoverText from '../components/HoverText';
 import Navbar from '../components/Navbar';
 
@@ -71,13 +70,6 @@ export default function ChatLayout() {
                                     status={message.status}
                                     score={message.score}
                                 />
-
-                                {message.role === 'bot' && (
-                                    <div className="mt-3">
-                                        <SecurityBadge />
-                                    </div>
-                                )}
-
                             </div>
                         ))}
 
